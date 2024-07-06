@@ -1,5 +1,5 @@
 import { Redirect, router } from "expo-router";
-import { Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, Image, ScrollView } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
