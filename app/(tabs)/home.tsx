@@ -11,11 +11,13 @@ import {
 } from "react-native-gesture-handler";
 import EmptyState from "@/components/EmptyState";
 import useAppwrite from "@/hooks/useAppwrite";
-import { getAllPosts } from "@/lib/appwrite";
+import { getAllPosts, getLatestPosts } from "@/lib/appwrite";
 import VideoCard from "@/components/VideoCard";
 
 const Home = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
+
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
@@ -30,7 +32,7 @@ const Home = () => {
         <FlatList
           data={posts}
           keyExtractor={(item: any) => item.$id}
-          renderItem={({ item }) => <VideoCard video={item} />}
+          renderItem={({ item }) => <VideoCard post={item} />}
           ListHeaderComponent={() => (
             <View className="my-6 px-4 space-y-6">
               <View className="justify-between items-start flex-row mb-6">
@@ -55,7 +57,7 @@ const Home = () => {
                 <Text className="text-gray-100 text-lg font-pregular mb-3">
                   Latest Videos
                 </Text>
-                {/* <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }] ?? []} /> */}
+                <Trending posts={latestPosts ?? []} />
               </View>
             </View>
           )}

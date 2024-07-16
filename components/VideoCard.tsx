@@ -2,13 +2,14 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 
 import { icons } from "../constants";
+import { ResizeMode, Video } from "expo-av";
 
 interface Creator {
   username: string;
   avatar: string;
 }
 
-interface Video {
+interface Post {
   title: string;
   thumbnail: string;
   video: string;
@@ -16,10 +17,10 @@ interface Video {
 }
 
 interface Props {
-  video: Video;
+  post: Post;
 }
 
-const VideoCard = ({ video }: Props) => {
+const VideoCard = ({ post }: Props) => {
   const [play, setPlay] = useState(false);
 
   return (
@@ -28,7 +29,7 @@ const VideoCard = ({ video }: Props) => {
         <View className="justify-center items-center flex-row flex-1">
           <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center p-0.5">
             <Image
-              source={{ uri: video.creator.avatar }}
+              source={{ uri: post.creator.avatar }}
               className="w-full h-full rounded-md"
               resizeMode="cover"
             />
@@ -38,13 +39,13 @@ const VideoCard = ({ video }: Props) => {
               className="text-white font-psemibold text-sm"
               numberOfLines={1}
             >
-              {video.title}
+              {post.title}
             </Text>
             <Text
               className="text-xs text-gray-100 font-pregular"
               numberOfLines={1}
             >
-              {video.creator.username}
+              {post.creator.username}
             </Text>
           </View>
         </View>
@@ -53,7 +54,22 @@ const VideoCard = ({ video }: Props) => {
         </View>
       </View>
       {play ? (
-        <Text>Playing</Text>
+        <Video
+          source={{
+            uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+          }}
+          className="w-full h-60 rounded-xl mt-3"
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
+          onPlaybackStatusUpdate={(status) => {
+            if (status.isLoaded) {
+              if (status.didJustFinish) {
+                setPlay(false);
+              }
+            }
+          }}
+        />
       ) : (
         <TouchableOpacity
           activeOpacity={0.7}
@@ -61,7 +77,7 @@ const VideoCard = ({ video }: Props) => {
           className="w-full h-60 rounded-xl mt-3 relative justify-center items-center"
         >
           <Image
-            source={{ uri: video.thumbnail }}
+            source={{ uri: post.thumbnail }}
             className="w-full h-full rounded-xl mt-3"
             resizeMode="cover"
           />
