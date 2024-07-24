@@ -11,7 +11,7 @@ import { images } from "../../constants";
 
 import FormField from "@/components/FormField";
 import CustomButton from "../../components/CustomButton";
-import { signIn } from "@/lib/appwrite";
+import { getCurrentUser, signIn } from "@/lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SignIn = () => {
@@ -33,7 +33,9 @@ const SignIn = () => {
     setIsSubmiting(true);
 
     try {
-      const result = await signIn(email, password);
+      await signIn(email, password);
+
+      const result = await getCurrentUser();
       setUser(result);
       setIsLoggedIn(true);
 

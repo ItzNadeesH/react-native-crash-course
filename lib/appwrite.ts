@@ -132,3 +132,25 @@ export const searchPosts = async (query: any) => {
     throw new Error(error);
   }
 };
+
+export const getUserPosts = async (userId: any) => {
+  try {
+    const posts = await databases.listDocuments(databaseId, videoCollectionId, [
+      Query.equal("creator", userId),
+    ]);
+
+    return posts.documents;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const signOut = async () => {
+  try {
+    const session = await account.deleteSession("current");
+
+    return session;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
